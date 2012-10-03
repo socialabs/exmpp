@@ -1,3 +1,10 @@
+exmpp (0.9.10-1.1) unstable; urgency=low
+
+  * Fix for newlines in attributes
+  * Add alogger to log xmpp stanzas
+
+ -- Dmitriy Budashny <dmitriy.budashny@gmail.com>  Wed, 03 Oct 2012 15:19:20 +0300
+
 exmpp (0.9.10-1) unstable; urgency=low
 
   * Add support for X-FACEBOOK-AUTH
