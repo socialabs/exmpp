@@ -1,3 +1,9 @@
+exmpp (0.9.10-1.2) unstable; urgency=low
+
+  * Handle tcp_error in exmpp_socket.
+
+ -- Serge S. Koval <serge.koval+github@gmail.com>  Thu, 25 Oct 2012 17:14:19 +0300
+
 exmpp (0.9.10-1.1) unstable; urgency=low
 
   * Fix for newlines in attributes
