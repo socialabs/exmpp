@@ -701,14 +701,14 @@ wait_for_starttls_result(#xmlstreamelement{element=#xmlel{name='proceed'}}, Stat
 
 
 wait_for_bind_response(#xmlstreamelement{element = #xmlel{name ='iq'} = IQ}, State) ->
-    #state{connection = Module, connection_ref = ConnRef} = State,
+    #state{connection = Module, connection_ref = ConnRef, auth_info = {_, Password}} = State,
     case exmpp_iq:get_type(IQ) of
         result ->
             JID = exmpp_client_binding:bounded_jid(IQ),
             %%TODO what does this exactly do?
-            NewAuthMethod = {basic, sasl_anonymous, JID, undefined}, %%TODO: is this neccesary?
+            %%NewAuthMethod = {basic, sasl_anonymous, JID, undefined}, %%TODO: is this neccesary?
             Module:send(ConnRef, exmpp_client_session:establish()),
-            {next_state, wait_for_session_response, State#state{auth_method=NewAuthMethod}};
+            {next_state, wait_for_session_response, State#state{auth_info={JID, Password}}};
         _ ->
             {stop, {bind, IQ}, State}
     end.
