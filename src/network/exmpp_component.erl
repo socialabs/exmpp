@@ -458,13 +458,13 @@ start_parser() ->
                           [{xmlstreamstart,new}]).
 
 %% Packet processing functions
-parse_and_deliver(ClientPid, Attrs, Packet, F) ->
+parse_and_deliver(ClientPid, Attrs, Packet, PacketType, F) ->
 	try
 		F(ClientPid, Attrs, Packet)
 	catch
 		_:_ ->
 			%%Some error, deliver only the raw packet
-			ClientPid ! #received_packet{packet_type = undefined,
+			ClientPid ! #received_packet{packet_type = PacketType,
                                  type_attr = undefined,
                                  from = undefined,
                                  id = undefined,
@@ -472,11 +472,11 @@ parse_and_deliver(ClientPid, Attrs, Packet, F) ->
 	end.
 
 process_presence(ClientPid, Attrs, Packet) ->
-	parse_and_deliver(ClientPid, Attrs, Packet, fun do_process_presence/3).
+	parse_and_deliver(ClientPid, Attrs, Packet, presence, fun do_process_presence/3).
 process_message(ClientPid, Attrs, Packet) ->
-	parse_and_deliver(ClientPid, Attrs, Packet, fun do_process_message/3).
+	parse_and_deliver(ClientPid, Attrs, Packet, message, fun do_process_message/3).
 process_iq(ClientPid, Attrs, Packet) ->
-	parse_and_deliver(ClientPid, Attrs, Packet, fun do_process_iq/3).
+	parse_and_deliver(ClientPid, Attrs, Packet, iq, fun do_process_iq/3).
 
 do_process_presence(ClientPid, Attrs, Packet) ->
     Type = get_attribute_value(Attrs, <<"type">>, "available"),
